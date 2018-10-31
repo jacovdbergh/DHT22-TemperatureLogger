@@ -78,6 +78,7 @@ def main():
 			mailSenderAvailable = False
 			logger.error('MailSender instantiation failed:\n',exc_info=True)
 	else
+		mailSender = False
 		mailSenderAvailable = False
 
 	# Instantiate sensorHandler and use it to read and persist readings

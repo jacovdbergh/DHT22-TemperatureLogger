@@ -39,16 +39,17 @@ class SensorDataHandler():
 			# Check if all sensors failed to get readings. If so, no need to continue.
 			if len(self.failedSensors) == len(self.configurations["sensorConfig"]):
 				self.logger.error('Failed to get readings from any of the sensors. Execution terminated')
-				try:
-					self.logger.info('Send warning to indicate that none of the sensors provided data')			
-					# Send warning email
-					self.mailSender.sendWarningEmail('Failed to get readings from any of the sensors. Please check debug log and configurations from config.json')
-					# There is no values to continue with, so it is good to terminate
-					self.logger.warning('Warning mail sent, no measurement values to continue with...terminate')
-					sys.exit(0)
-				except Exception as e:
-					self.logger.error('Warning mail sending failed',exc_info=True)
-					raise
+				if mailSender != False
+					try:
+						self.logger.info('Send warning to indicate that none of the sensors provided data')			
+						# Send warning email
+						self.mailSender.sendWarningEmail('Failed to get readings from any of the sensors. Please check debug log and configurations from config.json')
+						# There is no values to continue with, so it is good to terminate
+						self.logger.warning('Warning mail sent, no measurement values to continue with...terminate')
+						sys.exit(0)
+					except Exception as e:
+						self.logger.error('Warning mail sending failed',exc_info=True)
+						raise
 		except Exception as e:
 			self.logger.error("Failed to check if all sensors failed to get readings",exc_info=True)
 			raise
@@ -58,11 +59,12 @@ class SensorDataHandler():
 			if len(self.failedSensors) != 0:
 				self.logger.warning('Failed to get readings from sensor(s): {0}'.format(', '.join(self.failedSensors)))
 				msg = 'Failed to get readings from sensor(s): {0}.\nPlease check debug log from RPI for further info and double check your config.json'.format(', '.join(self.failedSensors))
-				try:
-					self.mailSender.sendWarningEmail(msg)
-				except Exception as e:
-					self.logger.error('Warning mail sending failed\n',exc_info=True)
-					raise
+				if mailSender != False
+					try:
+						self.mailSender.sendWarningEmail(msg)
+					except Exception as e:
+						self.logger.error('Warning mail sending failed\n',exc_info=True)
+						raise
 		except Exception as e:
 			self.logger.error("Failed to check how many sensors failed to provide readings",exc_info=True)
 			raise
@@ -74,21 +76,22 @@ class SensorDataHandler():
 			self.logger.error("Failed to persist read data to database",exc_info=True)
 			raise
 
-		# Compare measured value with previous measured value and set threshold. 
-		# E.g. if config has threshold set to 5. Last measurement was 20 and now it is 30. Set threshold has been exceeded by 5 (30-20-5)
-		# And it is time to send alarm
-		try:
-			self._measurementCompareAgainstSetThreshold()
-		except:
-			self.logger.error("Failed to perform comparison between measured data and set threshold",exc_info=True)
-			raise
+		if mailSender != False
+			# Compare measured value with previous measured value and set threshold. 
+			# E.g. if config has threshold set to 5. Last measurement was 20 and now it is 30. Set threshold has been exceeded by 5 (30-20-5)
+			# And it is time to send alarm
+			try:
+				self._measurementCompareAgainstSetThreshold()
+			except:
+				self.logger.error("Failed to perform comparison between measured data and set threshold",exc_info=True)
+				raise
 
-		# Check if measured values are beyond set limits
-		try:
-			self._compareReadValuesWithSetLimits()
-		except:	
-			self.logger.error("Failed to compare read value with set limits",exc_info=True)
-			raise
+			# Check if measured values are beyond set limits
+			try:
+				self._compareReadValuesWithSetLimits()
+			except:	
+				self.logger.error("Failed to compare read value with set limits",exc_info=True)
+				raise
 
 		return
 
