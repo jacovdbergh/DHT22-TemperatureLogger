@@ -59,7 +59,7 @@ class SensorDataHandler():
 			if len(self.failedSensors) != 0:
 				self.logger.warning('Failed to get readings from sensor(s): {0}'.format(', '.join(self.failedSensors)))
 				msg = 'Failed to get readings from sensor(s): {0}.\nPlease check debug log from RPI for further info and double check your config.json'.format(', '.join(self.failedSensors))
-				if mailSender != False
+				if not mailSender:
 					try:
 						self.mailSender.sendWarningEmail(msg)
 					except Exception as e:
