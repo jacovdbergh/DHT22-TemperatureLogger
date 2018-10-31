@@ -87,20 +87,21 @@ class SensorReader():
 				failedSensors.append(sensorName)
 				continue
 
-			try:
-				self.logger.info('Checking when last mail regarding this sensor was sent out. Sensor=%s',sensorName)
-				# Check when last warning / email was sended via mail for this sensor
-				mailSentTime = self.dbControl.getLastSensorMailSentTime(sensorName)
-				
-				# If there weren't any entries in database and mailSenTime is empty, then it is assumed that this is fresh database
-				if mailSentTime == None:
-					self.logger.warning('No entry for last mail sent')
-				else:
-					self.logger.info('Last mail regarding this sensor was sent out on: %s',mailSentTime)
-					readingsFromSensors[sensorName]['lastMailSent'] = mailSentTime
-			except Exception as e:
-				self.logger.error('Failed to get entry when last mail regarding this sensor was sent out.\n',exc_info=True)
-				raise
+			if configurations.get('mailConfig')[0]['sendMail'] == 'y':
+				try:
+					self.logger.info('Checking when last mail regarding this sensor was sent out. Sensor=%s',sensorName)
+					# Check when last warning / email was sended via mail for this sensor
+					mailSentTime = self.dbControl.getLastSensorMailSentTime(sensorName)
+					
+					# If there weren't any entries in database and mailSenTime is empty, then it is assumed that this is fresh database
+					if mailSentTime == None:
+						self.logger.warning('No entry for last mail sent')
+					else:
+						self.logger.info('Last mail regarding this sensor was sent out on: %s',mailSentTime)
+						readingsFromSensors[sensorName]['lastMailSent'] = mailSentTime
+				except Exception as e:
+					self.logger.error('Failed to get entry when last mail regarding this sensor was sent out.\n',exc_info=True)
+					raise
 
 			# Get and store information about the last measured temperature and humidity, used later for comparison
 			# Testdata:
