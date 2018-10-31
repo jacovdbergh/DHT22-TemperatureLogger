@@ -9,6 +9,7 @@
 	[[{"name":"Inside"},{"gpio":"22"},{"sensorType":"22"},{"temperatureLowLimit":"18"},{"temperatureHighLimit":"24"},{"temperatureThreshold":"5"},{"humidityLowLimit":"10"},{"humidityHighLimit":"60"},{"humidityThreshold":"10"}],
 	[{"name":"Outside"},{"gpio":"23"},{"sensorType":"22"},{"temperatureLowLimit":"-10"},{"temperatureHighLimit":"15"},{"temperatureThreshold":"5"},{"humidityLowLimit":"40"},{"humidityHighLimit":"60"},{"humidityThreshold":"10"}]],
 "mailInfo":[{
+	"sendMail":"n",
 	"senderaddress":"email address to sender field @gmail.com",
 	"receiveraddress":"email address where to send warnings @gmail.com",
 	"username":"username",
@@ -17,13 +18,13 @@
 	"subjectwarning":"Warning from temperature logger"
 	}],
 "sqlBackupDump":[{
-	"backupDumpEnabled":"y",
+	"backupDumpEnabled":"n",
 	"backupDay":"1",
 	"backupHour":"23",
 	"backupDumpPath":"/home/pi/DHT22-TemperatureLogger/Backups/"
 	}],
 "weeklyAverages":[{
-	"weeklyAverageSendingEnabled":"y",
+	"weeklyAverageSendingEnabled":"n",
 	"weekDayForSendingAverages":"1",
 	"hourOfTheDayForSendingAverages":"23"
 	}],

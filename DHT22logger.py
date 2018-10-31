@@ -68,14 +68,17 @@ def main():
 		logger.error("dbController instantiation failed:\n",exc_info=True)
 		sys.exit(0)
 
-	# Instantiate mail sender
-	# If mail sender instantiation fails, mail warnings cannot be send. Logger to db should work though, so no need for terminating
-	try:
-		mailSender = MailSender(configurations, dbControl)
-		mailSenderAvailable = True
-	except Exception as e:
+	if configurations.get('mailConfig')[0]['sendMail'] == 'y':
+		# Instantiate mail sender
+		# If mail sender instantiation fails, mail warnings cannot be send. Logger to db should work though, so no need for terminating
+		try:
+			mailSender = MailSender(configurations, dbControl)
+			mailSenderAvailable = True
+		except Exception as e:
+			mailSenderAvailable = False
+			logger.error('MailSender instantiation failed:\n',exc_info=True)
+	else
 		mailSenderAvailable = False
-		logger.error('MailSender instantiation failed:\n',exc_info=True)
 
 	# Instantiate sensorHandler and use it to read and persist readings
 	try:
