@@ -77,7 +77,7 @@ class DbController():
 		self.logger.info('Start reading last sensor measurements')
 
 		# Sql query to be executed
-		sqlQuery = "SELECT * FROM weatherdata WHERE sensor='%s' and created_at IN (SELECT max(created_at) FROM weatherdata WHERE sensor='%s')" % (sensor,sensor)
+		sqlQuery = "SELECT * FROM weather_data WHERE sensor='%s' and created_at IN (SELECT max(created_at) FROM weather_data WHERE sensor='%s')" % (sensor,sensor)
 
 		# Execute and return data
 		sensorData = self.dbActions.sqlSelect(sqlQuery)
@@ -94,7 +94,7 @@ class DbController():
 
 		try:
 			# Query to be executed
-			sqlQuery = "SELECT AVG(temperature) FROM weatherdata WHERE created_at BETWEEN '%s' AND '%s' AND sensor='%s'" % (delta,self.currentTimeAsString,sensor)
+			sqlQuery = "SELECT AVG(temperature) FROM weather_data WHERE created_at BETWEEN '%s' AND '%s' AND sensor='%s'" % (delta,self.currentTimeAsString,sensor)
 
 			# Execute
 			data = self.dbActions.sqlSelect(sqlQuery)
@@ -121,7 +121,7 @@ class DbController():
 
 		try:
 			# Query to be executed
-			sqlQuery = "SELECT AVG(humidity) FROM weatherdata WHERE created_at BETWEEN '%s' AND '%s' AND sensor='%s'" % (delta,self.currentTimeAsString,sensor)
+			sqlQuery = "SELECT AVG(humidity) FROM weather_data WHERE created_at BETWEEN '%s' AND '%s' AND sensor='%s'" % (delta,self.currentTimeAsString,sensor)
 
 			# Execute and calculate average
 			data = self.dbActions.sqlSelect(sqlQuery)
@@ -143,7 +143,7 @@ class DbController():
 	
 		try:
 			# Query to be executed
-			sqlQuery = "INSERT INTO weatherdata SET created_at='%s', sensor='%s', temperature='%s', humidity='%s'" % (self.currentTimeAsString,sensor,temperature,humidity)
+			sqlQuery = "INSERT INTO weather_data SET created_at='%s', sensor='%s', temperature='%s', humidity='%s'" % (self.currentTimeAsString,sensor,temperature,humidity)
 			
 			# Execute
 			self.dbActions.sqlInsert(sqlQuery)
