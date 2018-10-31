@@ -39,7 +39,7 @@ class SensorDataHandler():
 			# Check if all sensors failed to get readings. If so, no need to continue.
 			if len(self.failedSensors) == len(self.configurations["sensorConfig"]):
 				self.logger.error('Failed to get readings from any of the sensors. Execution terminated')
-				if mailSender != False
+				if not mailSender:
 					try:
 						self.logger.info('Send warning to indicate that none of the sensors provided data')			
 						# Send warning email
@@ -76,7 +76,7 @@ class SensorDataHandler():
 			self.logger.error("Failed to persist read data to database",exc_info=True)
 			raise
 
-		if mailSender != False
+		if not mailSender:
 			# Compare measured value with previous measured value and set threshold. 
 			# E.g. if config has threshold set to 5. Last measurement was 20 and now it is 30. Set threshold has been exceeded by 5 (30-20-5)
 			# And it is time to send alarm

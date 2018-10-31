@@ -77,7 +77,7 @@ def main():
 		except Exception as e:
 			mailSenderAvailable = False
 			logger.error('MailSender instantiation failed:\n',exc_info=True)
-	else
+	else:
 		mailSender = False
 		mailSenderAvailable = False
 
