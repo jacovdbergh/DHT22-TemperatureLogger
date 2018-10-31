@@ -87,7 +87,7 @@ class SensorReader():
 				failedSensors.append(sensorName)
 				continue
 
-			if configurations.get('mailConfig')[0]['sendMail'] == 'y':
+			if self.configurations.get('mailConfig')[0]['sendMail'] == 'y':
 				try:
 					self.logger.info('Checking when last mail regarding this sensor was sent out. Sensor=%s',sensorName)
 					# Check when last warning / email was sended via mail for this sensor
