@@ -30,6 +30,7 @@
 #coding=utf-8
 
 import sys
+import urllib2
 import logging, logging.handlers
 
 from Debugger.Logger import Logger
@@ -131,7 +132,14 @@ def main():
 				except Exception as e:
 					logger.error('Failed to send email:\n',exc_info=True)
 		logger.info("Sql backup dump finished")
-
+	
+	try:
+		request = urllib2.Request("http://localhost/data-updated", headers={"Accept" : "text/html"})
+		contents = urllib2.urlopen(request).read()
+		logger.info("Weatherpi webhook called\n")
+	except Exception as e:
+		logger.info("Weatherpi webhook failed\n")
+		
 	logger.info("DHT22logger execution finished\n")
 
 if __name__ == "__main__":
