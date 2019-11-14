@@ -1,5 +1,6 @@
 import logging
 import sys
+import socket
 
 from Sensors.SensorReader import SensorReader
 from Utility.MeasurementCompare import MeasurementCompare
@@ -103,6 +104,9 @@ class SensorDataHandler():
 			try:
 				# Call setSensorTemperatureAndHumidityToDb from dbcontrol. Provide sensor name and value
 				self.dbControl.setSensorTemperatureAndHumidityToDb(key,value)
+				sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				udpString = "weather,sensor=weatherpi temperature=%s,humidity=%s" % (value['temperature'],value['humidity'])
+				sock.sendto(udpString, ("192.168.1.50", 8089))
 			except:
 				# Msg to separate variable, so that key can be added as well.
 				msg = 'Failed to persist temperature and humidity readings to database. Sensor : %s', key
